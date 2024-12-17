@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+            text-align: left;
+        }
+        .form-row {
+            display: table-row;
+            cursor: pointer;
+            background-color: white;
+            transition: background-color 0.3s;
+        }
+        .form-row:hover {
+            background-color: #e0e0e0;
+        }
+        .form-cell {
+            display: table-cell;
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+    </style>
+    <script>
+        function selectRow(row, roomId) {
+            // Deselect previously selected rows
+            const rows = document.querySelectorAll('.form-row');
+            rows.forEach(r => r.classList.remove('selected'));
+
+            // Select the clicked row
+            row.classList.add('selected');
+
+            // Update the hidden input value
+            document.getElementById('selected-room-id').value = roomId;
+        }
+    </script>
+</head>
+<body>
+    
+    <h1>Available Rooms</h1>
+    <form action="/add_client_accomodation" method="POST">
+
+        <label for="name">name</label>
+        <input type="text" id="name" name="name">
+
+        <label for="start-date">Start Date:</label>
+        <input type="date" id="start-date" name="start-date" required>
+        <label for="end-date">End Date:</label>
+        <input type="date" id="end-date" name="end-date" required>
+        <label for="name">Resident name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <input type="hidden" id="selected-room-id" name="room_id" value="">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Beds</th>
+                    <th>Price Per Night</th>
+                    <th>Rating</th>
+                    <th>Number of Ratings</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for room in rooms %}
+                <tr class="form-row" onclick="selectRow(this,  room['id'] )">
+                    <td class="form-cell">{{ room['id'] }}</td>
+                    <td class="form-cell">{{ room['beds'] }}</td>
+                    <td class="form-cell">{{ room['ppn'] }}</td>
+                    <td class="form-cell">{{ room['rating'] }}</td>
+                    <td class="form-cell">{{ room['no_ratings'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit">Submit</button>
+    </form>
+    <script>
+        
+        //Optional: Ensure the end date is always after the start date
+       const startDateInput = document.getElementById('start-date');
+       const endDateInput = document.getElementById('end-date');
+
+       startDateInput.addEventListener('change', () => {
+           const startDate = startDateInput.value;
+           endDateInput.min = startDate; // Set the minimum date for the end date
+       });
+
+       endDateInput.addEventListener('change', () => {
+           const endDate = endDateInput.value;
+           startDateInput.max = endDate; // Set the maximum date for the start date
+       });
+   </script>
+</body>
+</html>

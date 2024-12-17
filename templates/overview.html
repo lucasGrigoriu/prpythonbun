@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>All current accomodations</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>roomid</th>
+                
+                <th>date_Start</th>
+                <th>date_end</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for accomodation in accomodations %}
+            <tr>
+                <td>{{ accomodation['id'] }}</td>
+                <td>{{ accomodation['room_id'] }}</td>
+                
+                <td>{{ accomodation['date_start'] }}</td>
+                <td>{{ accomodation['date_end'] }}</td>
+                <td>{{ accomodation['name'] }}</td>
+                
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h1>Available Rooms</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Beds</th>
+                <th>Price Per Night</th>
+                <th>Rating</th>
+                <th>Number of Ratings</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for room in rooms %}
+            <tr>
+                <td>{{ room['id'] }}</td>
+                <td>{{ room['beds'] }}</td>
+                <td>{{ room['ppn'] }}</td>
+                <td>{{ room['rating'] }}</td>
+                <td>{{ room['no_ratings'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
